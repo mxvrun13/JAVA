@@ -9,6 +9,14 @@ public class CalcGame {
 	double a;
 	double b;
 	
+	// 1~cnt까지의 합 계산
+	int sum (int cnt) {
+		int result = 0;
+		for (int i=1; i<=cnt; i++) {
+			result += i;
+		}
+		return result;
+	}
 	void input() {
 		CalcGame game = new CalcGame();
 		Scanner scanner = new Scanner(System.in);
