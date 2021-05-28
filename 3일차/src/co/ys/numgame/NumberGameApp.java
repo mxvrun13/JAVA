@@ -22,11 +22,11 @@ public class NumberGameApp {
 	boolean confirm() {
 		boolean result = false;
 		if (com > user || com < user) {
-			result = false;
 			System.out.println("틀렸습니다.");
+			result = false;
 		} else {
-			result = true;
 			System.out.println("맞았습니다.");
+			result = true;
 		}
 		return result;
 	}

@@ -40,7 +40,26 @@ public class StarApp {
 			System.out.println(pad('*', i*2-1));
 		}
 	}
-			
+	
+	void drawTitle(String s, int cnt) {
+		for(int i=0 ; i<cnt ; i++) {
+			System.out.print("=");
+		}
+		System.out.println();
+		System.out.println(s);
+		for(int i=0 ; i<cnt ; i++) {
+			System.out.print("=");
+		}
+		System.out.println();
+	}
+	
+	void drawRect(int num) {
+		for(int i=0 ; i<num ; i++) {
+			System.out.print(pad(' ',50) + pad(' ',num));
+			System.out.println("***");
+		}		
+	}
+	
 	// (*,10) = * 10개 생성
 	String pad(char s, int cnt) {
 		String result = "";
