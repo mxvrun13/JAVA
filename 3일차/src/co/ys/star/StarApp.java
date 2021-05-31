@@ -20,7 +20,7 @@ public class StarApp {
 	// 이등변 삼각형 출력
 	void drawEq(int cnt) {
 		for(int i=1 ; i<cnt ; i++) {			
-			System.out.print(pad(' ',50)+pad(' ',cnt-i));
+			System.out.print(pad(' ',49)+pad(' ',cnt-i));
 			System.out.println(pad('*', i*2-1));
 		}
 	}
@@ -36,7 +36,7 @@ public class StarApp {
 	// 트리 모양
 	void drawEq(int n1, int n2) {
 		for(int i=n1 ; i<n2 ; i++) {			
-			System.out.print(pad(' ',50)+pad(' ',n2-i));
+			System.out.print(pad(' ',50-n1)+pad(' ',n2-i));
 			System.out.println(pad('*', i*2-1));
 		}
 	}
@@ -55,7 +55,7 @@ public class StarApp {
 	
 	void drawRect(int num) {
 		for(int i=0 ; i<num ; i++) {
-			System.out.print(pad(' ',50) + pad(' ',num));
+			System.out.print(pad(' ',48) + pad(' ',num));
 			System.out.println("***");
 		}		
 	}

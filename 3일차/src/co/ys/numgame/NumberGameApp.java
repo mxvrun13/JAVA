@@ -31,12 +31,31 @@ public class NumberGameApp {
 		return result;
 	}
 	void start() {
-		init();
-		while(true) {
-			input();
-			if(confirm()) {
-				break;
+		init();	
+			while(true) {
+				input();
+				if(confirm() == true) {
+					if(confirmStart() == true) {						
+						break;
+					}
+				}
 			}
+	}
+					
+	boolean confirmStart() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("게임을 다시 시작할끼요? y/n");
+		char re = scanner.next().charAt(0);
+		if (re == 'y' || re == 'Y') {
+			return true;
+		} else {
+			System.out.println("게임을 종료합니다.");
+			return false;
 		}
 	}
-}
+				}				
+					
+			
+		
+	
+
