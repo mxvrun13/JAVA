@@ -6,7 +6,7 @@ public class GameTest {
 
 	public static void main(String[] args) {
 		GugudanApp app = new GugudanApp();
-		app.
+		
 	}
 
 }

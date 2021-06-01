@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class NumberGameApp {
 	
+	Scanner scanner = new Scanner(System.in);
 	// 임의의 수
 	int com;  //난수
 	int user; // 사용자 수 입력
@@ -13,7 +14,6 @@ public class NumberGameApp {
 	}
 	
 	void input() {
-		Scanner scanner = new Scanner(System.in);
 		System.out.println("숫자 : ");
 		user = scanner.nextInt();
 	}
@@ -43,17 +43,16 @@ public class NumberGameApp {
 	}
 					
 	boolean confirmStart() {
-		Scanner scanner = new Scanner(System.in);
 		System.out.println("게임을 다시 시작할끼요? y/n");
 		char re = scanner.next().charAt(0);
 		if (re == 'y' || re == 'Y') {
-			return true;
+			return false;
 		} else {
 			System.out.println("게임을 종료합니다.");
-			return false;
+			return true;
 		}
 	}
-				}				
+}				
 					
 			
 		
