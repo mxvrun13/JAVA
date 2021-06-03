@@ -49,4 +49,18 @@ public class Robot {
 		System.out.printf("arm : %d, leg : %d", arm, leg);
 		System.out.println();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {		// equls를 오버라이딩 하지 않으면 주소 비교
+		Robot r2 = ((Robot)obj);
+		return r2.arm == this.arm && r2.leg == this.leg;
+	}
+	
+	@Override
+	public String toString() {		//오버라이딩 안하면 주소 출력
+		return "arm=" + arm + ", leg=" + leg;
+	}
+	
+	
+	
 }

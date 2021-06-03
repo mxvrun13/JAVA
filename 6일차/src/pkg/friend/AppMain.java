@@ -1,7 +1,5 @@
 package pkg.friend;
 
-import pkg.Friend;
-
 public class AppMain {
 	
 	public static void main(String[] args) {

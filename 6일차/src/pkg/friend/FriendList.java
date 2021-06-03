@@ -3,10 +3,8 @@ package pkg.friend;
 import java.util.ArrayList;
 import java.util.List;
 
-import pkg.Friend;
-
 public class FriendList implements FriendAccess {
-	
+
 	List<Friend> friends;	//List는 인터페이스 ArrayList는 클래스
 	
 	public FriendList() {
@@ -21,24 +19,27 @@ public class FriendList implements FriendAccess {
 
 	@Override
 	public void update(String name) {
-		// TODO Auto-generated method stub
-		
+		//friends.set(1, name);
 	}
 
 	@Override
 	public void delete(String name) {
-		// TODO Auto-generated method stub
-		
+		for (Friend f : friends){
+			if (f.getName().equals(name)) {
+				friends.remove(f);
+			}
+		}
 	}
+
 
 	@Override
 	public void selectAll() {
-		System.out.println("FriendList");
+		System.out.println(friends);
 	}
 
 	@Override
 	public Friend selectOne(String name) {
-		for (Friend f : friends);{
+		for (Friend f : friends){
 		if (f.getName().equals(name)) {
 			return f;
 			}

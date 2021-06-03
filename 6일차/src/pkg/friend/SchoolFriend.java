@@ -1,7 +1,5 @@
 package pkg.friend;
 
-import pkg.Friend;
-
 public class SchoolFriend extends Friend {
 	
 	String birth;

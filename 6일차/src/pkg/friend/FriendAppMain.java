@@ -1,7 +1,5 @@
 package pkg.friend;
 
-import pkg.Friend;
-
 public class FriendAppMain {
 
 	public static void main(String[] args) {
@@ -12,14 +10,14 @@ public class FriendAppMain {
 		f = new SchoolFriend("초등", "김기자", "010011111111");
 		list.insert(f);
 		// 검색
-		System.out.println(list.selectOne("홍길동"));
+		//System.out.println(list.selectOne("홍길동"));
 		// 수정
 		f = new SchoolFriend("초등", "김기자", "010444444444");
-		list.update(f);
+		list.update("홍길동");
 		// 삭제
-		list.delete("홍길동");
+		//list.delete("홍길동");
 		// 전체 조회
-		list.selectAll();
+		//list.selectAll();
 	}
 
 }

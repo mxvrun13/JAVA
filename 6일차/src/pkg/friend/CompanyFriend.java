@@ -1,7 +1,5 @@
 package pkg.friend;
 
-import pkg.Friend;
-
 public class CompanyFriend extends Friend {
 	
 	String duty;
