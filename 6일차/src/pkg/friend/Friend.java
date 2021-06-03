@@ -10,11 +10,11 @@ public class Friend {
 		super();
 	}
 
-	public Friend(String gubun, String name, String phoneNum) {
+	public Friend(String gubun, String name, String tel) {
 		super();
 		this.gubun = gubun;
 		this.name = name;
-		this.tel = phoneNum;
+		this.tel = tel;
 	}
 
 	public void print() {
@@ -22,12 +22,12 @@ public class Friend {
 	}
 
 	
-	public String getCategory() {
+	public String getGubun() {
 		return gubun;
 	}
 
-	public void setCategory(String category) {
-		this.gubun = category;
+	public void setGubun(String gubun) {
+		this.gubun = gubun;
 	}
 
 	public String getName() {
@@ -38,13 +38,15 @@ public class Friend {
 		this.name = name;
 	}
 
-	public String getPhoneNum() {
+	public String getTel() {
 		return tel;
 	}
 
-	public void setPhoneNum(String phoneNum) {
-		this.tel = phoneNum;
+	public void setTel(String tel) {
+		this.tel = tel;
 	}
+
+	
 
 	@Override
 	public String toString() {

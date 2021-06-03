@@ -1,32 +1,84 @@
 package pkg.friend.util;
 
 import java.util.Scanner;
-import
+import pkg.friend.Friend;
 
 public class ScannerUtil {
 
 	public static void main(String[] args) {
 		
-		//
+		readDate();
+	}
 		
-		
-		static Scanner scanner = new Scanner (System.in);
-		
-		public static int String readInt() {
+		public static int readInt() {
+			int result = 0;
+			while (true) {
+				try {
+					Scanner scanner = new Scanner(System.in);
+					System.out.println("입력 : ");
+					result = scanner.nextInt();
+					if(Character.isDigit(result))
+						System.out.println(result);
+						break;
+				} catch (Exception e) {
+					System.out.println("숫자를 입력하세요.");
+			}
 		}
-		public static String readStr() {
-			
-		}
-		public static String readDate() {
-			
-		}
-		public static Friend readFriend() {	
-			String result = scanner.next();	// 초등 홍길동 1111 입력
-			String[] arr = result.split(result);
-			
-			return Friend;
-		}
-		
+			return result;
 	}
 
+
+		public static String readStr() {
+			String result = "";
+			while (true) {
+				try {
+					Scanner scanner = new Scanner(System.in);
+					System.out.println("입력 : ");
+					result = scanner.next();
+					//if(result instanceof String)
+						System.out.println(result);
+						break;
+				} catch (Exception e) {
+					System.out.println("문자를 입력하세요.");
+				}
+			}
+			return result;
+		}
+			
+
+		public static String readDate() {
+			String result;
+				while(true) {
+					try {
+						Scanner scanner = new Scanner(System.in);
+						System.out.println("입력 : ");
+						result = scanner.next();
+						String[] score = result.split("/");
+						System.out.println("y : " + score[0] + ", m : " + score[1] + ", d : " + score[2]);
+		
+						if(result!=null) break;
+					} catch (Exception e) {
+						System.out.println("날짜를 입력하세요");;
+					}
+	
+			}
+				return result;
+		}
 }
+			
+
+//		public static Friend readFriend() {	
+//			System.out.println("입력(,) : ");
+//			String result = scanner.next();	// 초등 홍길동 1111 입력
+//			String[] arr = result.split(",");
+//			Friend friend = new Friend();
+//			friend.setGubun(arr[0]);
+//			friend.setName(arr[1]);
+//			friend.setTel(arr[2]);
+//			
+//			return friend;
+//		}
+//		
+//	}
+//
+//}

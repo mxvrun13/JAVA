@@ -15,8 +15,12 @@ public class ScoreInputTest {
 			while(true) {
 				a = fr.readLine();
 				String[] score = a.split(" ");
-				
-				Integer.parseInt(score);	// 과제
+				int total = 0;
+				for(int i = 0 ; i<score.length ; i++) {
+					int num = Integer.parseInt(score[i]);
+					total += num;
+				} 
+				System.out.println(total);
 				
 				if(a==null) break;
 				out.println(a);
