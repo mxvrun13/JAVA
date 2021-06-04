@@ -9,7 +9,7 @@ public class ScoreInputTest {
 	public static void main(String[] args) {
 		
 		try {
-			BufferedReader fr = new BufferedReader(new FileReader("d:/temp/data.txt"));
+			BufferedReader fr = new BufferedReader(new FileReader("d:/temp/score.txt"));
 			PrintStream out = System.out;
 			String a;
 			while(true) {
@@ -27,7 +27,7 @@ public class ScoreInputTest {
 			}
 			fr.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());;
 		}
 	}
 

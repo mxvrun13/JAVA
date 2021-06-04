@@ -1,13 +1,14 @@
 package pkg.friend.util;
 
 import java.util.Scanner;
+
 import pkg.friend.Friend;
 
 public class ScannerUtil {
 
 	public static void main(String[] args) {
 		
-		readDate();
+		readInt();
 	}
 		
 		public static int readInt() {
@@ -35,7 +36,6 @@ public class ScannerUtil {
 					Scanner scanner = new Scanner(System.in);
 					System.out.println("입력 : ");
 					result = scanner.next();
-					//if(result instanceof String)
 						System.out.println(result);
 						break;
 				} catch (Exception e) {
@@ -64,21 +64,21 @@ public class ScannerUtil {
 			}
 				return result;
 		}
-}
+
 			
 
-//		public static Friend readFriend() {	
-//			System.out.println("입력(,) : ");
-//			String result = scanner.next();	// 초등 홍길동 1111 입력
-//			String[] arr = result.split(",");
-//			Friend friend = new Friend();
-//			friend.setGubun(arr[0]);
-//			friend.setName(arr[1]);
-//			friend.setTel(arr[2]);
-//			
-//			return friend;
-//		}
-//		
-//	}
-//
-//}
+		public static Friend readFriend() {		// 모르겠음
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("입력(,) : ");
+			String result = scanner.next();	// 초등 홍길동 1111 입력
+			String[] arr = result.split(",");
+			Friend friend = new Friend();
+			friend.setGubun(arr[0]);
+			friend.setName(arr[1]);
+			friend.setTel(arr[2]);
+		
+			return friend;
+		}
+		
+	}
+
