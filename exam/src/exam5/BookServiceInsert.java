@@ -17,7 +17,7 @@ public class BookServiceInsert implements BookService{
 		book.setIsbn(arr[0]);
 		book.setName(arr[1]);
 		book.setContent(arr[2]);
-		list.insert(book);
+		list.insert(book);		// 매개 변수가 객체, 새로운 객체를 생성하여 담음
 		
 		
 	}
