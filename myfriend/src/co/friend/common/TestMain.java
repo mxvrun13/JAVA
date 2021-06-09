@@ -19,7 +19,7 @@ public class TestMain {
 		Properties props = new Properties(); 
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", host); 
-		props.put("mail.smtp.port", 465); 
+		props.put("mail.smtp.port", 587); 
 		props.put("mail.smtp.auth", "true");
 		
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
