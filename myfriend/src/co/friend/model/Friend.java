@@ -1,6 +1,7 @@
 package co.friend.model;
 
 public class Friend {	// 클래스에 final을 걸면 상속 불가
+
 	protected String gubun;		// protected : 상속 관계의 자식 클래스만 접근 가능
 	protected String name;
 	protected String tel;
@@ -47,5 +48,19 @@ public class Friend {	// 클래스에 final을 걸면 상속 불가
 		return "Friend [gubun=" + gubun + ", name=" + name + ", tel=" + tel + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		return //this.getGubun().hashCode() + 
+				this.getName().hashCode() ;
+				//+this.getTel().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Friend f = (Friend) obj;
+		return //this.getGubun().equals(f.getGubun()) && 
+				this.getName().equals(f.getName());
+		//&& this.getTel().equals(f.getTel());
+	}
 	
 }

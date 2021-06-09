@@ -2,13 +2,16 @@ package co.friend.view;
 
 import java.util.List;
 
-import co.friend.access.FriendList;
+import co.friend.access.FriendAccess;
+import co.friend.access.FriendDAO;
+//import co.friend.access.FriendList;
 import co.friend.model.Friend;
 import co.friend.util.ScannerUtil;
 
 public class FriendCliApp {
 	
-	FriendList friendList = new FriendList();
+//	FriendList friendList = new FriendList();
+	FriendAccess friendList = new FriendDAO();
 	
 	public void start() {
 		int menunum;
@@ -39,19 +42,23 @@ public class FriendCliApp {
 	}
 
 	private void insert() {
+		System.out.println("<추가할 구분,이름,전화번호 입력> ");
 		Friend friend = ScannerUtil.readFriend();
 		friendList.insert(friend);
 	}
 
 	private void update() {
 		Friend friend = new Friend();
+		System.out.println("<수정할 이름 입력> ");
 		friend.setName(ScannerUtil.readStr());
+		System.out.println("<변경할 전화번호 입력>");
 		friend.setTel(ScannerUtil.readStr());
 		friendList.update(friend);
 		
 	}
 
 	private void delete() {
+		System.out.println("<삭제할 이름 입력>");
 		String name = ScannerUtil.readStr();
 		friendList.delete(name);
 		
@@ -65,6 +72,7 @@ public class FriendCliApp {
 	}
 
 	private void findName() {
+		System.out.println("<조회할 이름 입력>");
 		String name = ScannerUtil.readStr();
 		Friend friend = friendList.findName(name);
 		System.out.println(friend);
@@ -72,6 +80,7 @@ public class FriendCliApp {
 	}
 
 	private void findTel() {
+		System.out.println("<조회할 전화번호 입력>");
 		String tel = ScannerUtil.readEvery();
 		Friend friend = friendList.findTel(tel);
 		System.out.println(friend);
