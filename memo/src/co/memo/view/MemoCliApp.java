@@ -2,14 +2,15 @@ package co.memo.view;
 
 import java.util.List;
 
-import co.memo.access.MemoList;
+import co.memo.access.MemoAccess;
+import co.memo.access.MemoDAO;
 import co.memo.model.Memo;
 import co.memo.util.ScannerUtil;
 
 
 public class MemoCliApp {
 	
-	MemoList memoList = new MemoList();
+	MemoAccess memoList = new MemoDAO();
 	
 	public void start() {
 		int menunum;
