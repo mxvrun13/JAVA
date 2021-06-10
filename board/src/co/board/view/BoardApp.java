@@ -105,13 +105,33 @@ public class BoardApp {
 	private void comment() {
 //		System.out.println("댓글을 달 글 번호 > ");
 //		int id = scanner.nextInt();
+		int num = 0;
 		BoardDAO dao = new BoardDAO();
-		System.out.println("1. 댓글 조회, 2. 댓글 등록, 0. 이전 메뉴로");
-		int num = scanner.nextInt();
-		if (num==1) {
-			System.out.println(dao.commentSelect());
-			
-		}
-		
+		Board board = new Board();
+		do {
+			System.out.println("1. 댓글 조회, 2. 댓글 등록, 0. 이전 메뉴로");
+			num = scanner.nextInt();
+			switch (num) {
+			case 1 : 
+				List<Board> list = dao.commentSelect();
+				for (Board b : list) {
+					System.out.println("Board [글 번호=" + b.getId() + ", 댓글=" + b.getContent() + "]");
+				}
+				break;
+			case 2 : 
+				System.out.println("댓글을 작성할 글 번호 >");
+				int id = scanner.nextInt();
+				System.out.println("댓글 작성 > ");
+				String content = null;
+				try {
+					content = br.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				board = new Board(id, content);
+				dao.commentInsert(board);
+				break;
+			}
+		} while(num!=0);
 	}
 }

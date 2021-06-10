@@ -20,7 +20,7 @@ public class BoardDAO implements BoardAccess {
 	public ArrayList<Board> selectAll() {
 		connect();
 		ArrayList<Board> boardList = new ArrayList<>();
-		sql = "select * from board";
+		sql = "select * from board where b_parent_id is null";
 		try {
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();
@@ -112,31 +112,34 @@ public class BoardDAO implements BoardAccess {
 		return board;
 	}
 	
-	public String commentSelect() {
+	public ArrayList<Board> commentSelect() {
 		connect();
-		Board board = new Board();
+		ArrayList<Board> boardList = new ArrayList<>();
 		sql = "select b_content from board where b_parent_id is not null";
 		try {
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();
 			while(rs.next()) {
-				board.setContent("b_content");
+				Board board = new Board();
+				//board.setId(rs.getInt("b_id"));
+				//board.setTitle(rs.getString("b_title"));
+				board.setContent(rs.getString("b_content"));
+				//board.setWriter(rs.getString("b_writer"));
+				boardList.add(board);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return board.getContent();
+		return boardList;
 	}
 	
-	public void commentInsert(String comment, int id) {
+	public void commentInsert(Board board) {
 		connect();
-		sql = "insert into (b_title,b_content,b_writer,b_parent_id) values (?,?,?,?)";
+		sql = "insert into board (b_title,b_content,b_writer,b_parent_id) values ('댓글',?,'댓글 작성자',?)";
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, "댓글");
-			psmt.setString(2, comment);
-			psmt.setString(3, "댓글");
-			psmt.setInt(4, id);
+			psmt.setString(1, board.getContent());
+			psmt.setInt(2, board.getId());
 			int r = psmt.executeUpdate();
 			System.out.println(r+"건 등록 완");
 		} catch (SQLException e) {
