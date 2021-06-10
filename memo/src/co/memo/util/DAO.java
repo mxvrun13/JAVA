@@ -9,7 +9,7 @@ public class DAO {
 		public Connection conn;
 		
 		protected DAO() {
-			String url = "jdbc:sqlite:C:/sqlite/db/memo.db";
+			String url = "jdbc:sqlite:C:/sqlite/db/sample.db";
 			try {
 				conn = DriverManager.getConnection(url);
 				System.out.println("연결 성공");				

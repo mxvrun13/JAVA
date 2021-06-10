@@ -16,7 +16,7 @@ public class MemoDAO extends DAO implements MemoAccess{
 
 	@Override
 	public void insert(Memo memo) {
-		sql = "insert into friend values (?,?)";
+		sql = "insert into memo values (?,?)";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, memo.getDate());
@@ -30,11 +30,11 @@ public class MemoDAO extends DAO implements MemoAccess{
 
 	@Override
 	public void update(Memo memo) {
-		sql = "update set friend content = ? where date = ?";
+		sql = "update memo set content = ? where date = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, memo.getDate());
-			psmt.setString(2, memo.getContent());
+			psmt.setString(1, memo.getContent());
+			psmt.setString(2, memo.getDate());
 			int r = psmt.executeUpdate();
 			System.out.println(r+"건 수정 완");
 		} catch (SQLException e) {
@@ -96,7 +96,7 @@ public class MemoDAO extends DAO implements MemoAccess{
 	@Override
 	public Memo findContent(String content) {
 		Memo memo = null;
-		sql = "select * from memo where content = *?*";
+		sql = "select * from memo where content = '?'";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, content);

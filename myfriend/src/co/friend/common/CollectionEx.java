@@ -30,6 +30,7 @@ public class CollectionEx {
 		Iterator<String> iter = set.iterator();
 		while(iter.hasNext()) {
 			String value = iter.next();
+			
 			System.out.println(value);
 		}
 		

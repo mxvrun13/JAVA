@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="C:/sqlite/connect/sqlite-jdbc-3.34.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/admin/Downloads/mail-1.4.7.jar"/>
 	<classpathentry kind="lib" path="C:/Users/영서/Downloads/mail-1.4.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/admin/Downloads/activation-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
