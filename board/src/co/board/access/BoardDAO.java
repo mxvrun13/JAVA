@@ -34,6 +34,8 @@ public class BoardDAO implements BoardAccess {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 		return boardList;
 	}
@@ -51,6 +53,8 @@ public class BoardDAO implements BoardAccess {
 			System.out.println(r+"건 등록 완");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 	}
 
@@ -66,10 +70,12 @@ public class BoardDAO implements BoardAccess {
 			if(r != 0) {
 				System.out.println(r+"건 수정 완");
 			} else {
-				System.out.println("존재하지 않는 글 번호 입니다.");
+				System.err.println("존재하지 않는 글 번호 입니다.");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 	}
 
@@ -84,10 +90,12 @@ public class BoardDAO implements BoardAccess {
 			if(r != 0) {
 				System.out.println(r+"건 삭제 완");
 			} else {
-				System.out.println("존재하지 않는 글 번호 입니다.");
+				System.err.println("존재하지 않는 글 번호 입니다.");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 	}
 
@@ -108,20 +116,23 @@ public class BoardDAO implements BoardAccess {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 		return board;
 	}
 	
-	public ArrayList<Board> commentSelect() {
+	public ArrayList<Board> commentSelect(int id) {
 		connect();
 		ArrayList<Board> boardList = new ArrayList<>();
-		sql = "select b_content from board where b_parent_id is not null";
+		sql = "select b_content from board where b_parent_id = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, id);
 			rs = psmt.executeQuery();
 			while(rs.next()) {
 				Board board = new Board();
-				//board.setId(rs.getInt("b_id"));
+				board.setId(id);
 				//board.setTitle(rs.getString("b_title"));
 				board.setContent(rs.getString("b_content"));
 				//board.setWriter(rs.getString("b_writer"));
@@ -129,6 +140,8 @@ public class BoardDAO implements BoardAccess {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 		return boardList;
 	}
@@ -144,8 +157,81 @@ public class BoardDAO implements BoardAccess {
 			System.out.println(r+"건 등록 완");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 	}
+	
+	public boolean checkId (int id) {	// 글 번호 존재 유무 확인
+		sql = "select * from board where b_id = ?";
+		connect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, id);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return false;
+	}
+	
+	public String login(String id, String pass) {
+		String str = null;
+		if(idCheck(id)) {
+			if(passCheck(pass)) {
+				str = "로그인 성공";				
+			} else {
+				str = "비밀번호가 틀렸습니다.";
+			}
+		} else {
+			str = "존재하지 않는 id입니다.";
+		} 
+		return str;
+	}
+	
+	public boolean idCheck(String id) {
+		boolean b = false;
+		connect();
+		sql = "select u_id from member where u_id = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, id);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				b = true;
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return b;
+	}
+	
+	public boolean passCheck(String pass) {
+		boolean b = false;
+		connect();
+		sql = "select u_pass from member where u_pass = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, pass);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				b = true;
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return b;
+	}
+
 	
 	public static void connect() {
 		String url = "jdbc:sqlite:C:/sqlite/db/sample.db";
@@ -154,7 +240,7 @@ public class BoardDAO implements BoardAccess {
 			System.out.println("연결 성공");	
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 	
 	public static void close() {
