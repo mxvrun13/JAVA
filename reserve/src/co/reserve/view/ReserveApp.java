@@ -1,25 +1,27 @@
 package co.reserve.view;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+//import java.io.BufferedReader;
+//import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import co.reserve.access.ReserveDAO;
-import co.reserve.model.Member;
+//import co.reserve.model.Member;
 import co.reserve.model.Reserve;
+import co.reserve.util.ScannerUtil;
 
 public class ReserveApp {
 	
 	String loginId;
-	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	//BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	Scanner sc = new Scanner(System.in);
 	ReserveDAO dao = new ReserveDAO();
-	Reserve r = new Reserve();
-	Member m = new Member();
+	//Reserve r = new Reserve();
+	//Member m = new Member();
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
+	public static final String TIME_FORMAT = "HH:mm";
 	
 	private boolean loginCheck() {
 		boolean b = false;
@@ -66,13 +68,11 @@ public class ReserveApp {
 				while (true) {
 					System.out.println("정말 탈퇴하시겠습니까? y/n");
 					result = sc.next();
-					try {
-						if (result.equals("y") || result.equals("n")) {
-							break;
-						} else {
-							System.err.println("올바르지 않은 입력입니다. y/n");
-						}
-					} catch (Exception e) {}
+					if (result.equals("y") || result.equals("n")) {
+						break;
+					} else {
+						System.err.println("올바르지 않은 입력입니다. ex) y/n");
+					}
 				}
 				if (result.equals("y")) {
 					dao.deleteAccount(id);
@@ -116,7 +116,7 @@ public class ReserveApp {
 		do {
 			loginList();
 			System.out.println("선택 > ");
-			num = sc.nextInt();
+			num = ScannerUtil.readInt();
 			switch (num) {
 			case 1:
 				if (loginCheck()) {
@@ -125,7 +125,7 @@ public class ReserveApp {
 						do {
 							adminList();
 							System.out.println("선택 > ");
-							listnum = sc.nextInt();
+							listnum = ScannerUtil.readInt();
 							switch (listnum) {
 							case 1 : adminSelectAll(); break;
 							case 2 : adminSelectDate(); break;
@@ -136,10 +136,11 @@ public class ReserveApp {
 						do {
 							memberList();
 							System.out.println("선택 > ");
-							listnum = sc.nextInt();
+							listnum = ScannerUtil.readInt();
 							switch (listnum) {
-							case 1:
-							case 2:
+							case 1 : selectAll(); break;
+							case 2 : insert(); break;
+							case 3 : delete(); break;
 							}
 						} while (listnum != 0);
 					}
@@ -163,7 +164,7 @@ public class ReserveApp {
 	private void adminSelectDate() {
 		String date;
 		while (true) {
-			System.out.println("날짜(yyyy-MM-dd) > ");
+			System.out.println("날짜(yyyy-mm-dd) > ");
 			date = sc.next();
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
@@ -171,7 +172,7 @@ public class ReserveApp {
 				if (date != null)
 					break;
 			} catch (ParseException e) {
-				System.out.println("날짜 형식이 올바르지 않습니다. ex) yyyy-mm-dd");
+				System.err.println("올바르지 않은 입력입니다. ex) yyyy-mm-dd");
 			}
 		}
 		ArrayList<Reserve> list = dao.adminSelectDate(date);
@@ -185,7 +186,7 @@ public class ReserveApp {
 		String id =  sc.next();
 		String date;
 		while (true) {
-			System.out.println("예약 날짜(yyyy-MM-dd) > ");
+			System.out.println("예약 날짜(yyyy-mm-dd) > ");
 			date = sc.next();
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
@@ -193,10 +194,90 @@ public class ReserveApp {
 				if (date != null)
 					break;
 			} catch (ParseException e) {
-				System.out.println("날짜 형식이 올바르지 않습니다. ex) yyyy-mm-dd");
+				System.err.println("올바르지 않은 입력입니다. ex) yyyy-mm-dd");
 			}
 		}
 		dao.adminDelete(id, date);
+	}
+	
+	private void selectAll() {
+		if (dao.selectAll(loginId).size() != 0) {
+			System.out.println(dao.selectAll(loginId));
+		} else {
+			System.out.println("예약 내역에 존재하지 않습니다.");
+		}
+	}
+	
+	private void insert() {
+		int total = 30;
+		String date = null;
+		String time = null;
+		int num = 0;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		String input = format.format(System.currentTimeMillis());
+		while (true) {
+			System.out.println("예약할 날짜(yyyy-mm-dd) > ");
+			date = sc.next();
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+				sdf.parse(date);
+				if (date != null)
+					break;
+			} catch (ParseException e) {
+				System.err.println("올바르지 않은 입력입니다. ex) yyyy-mm-dd");
+			}
+		}
+		if (dao.reserveCheck(loginId, date)) {
+			System.err.println("예약은 1일 1회만 가능합니다.");
+		} else {
+			while (true) {
+				System.out.println("시간을 선택해주세요 (HH:mm) > ");
+				time = sc.next();
+				try {
+					SimpleDateFormat sdf = new SimpleDateFormat(TIME_FORMAT);
+					sdf.parse(time);
+					if (time != null)
+						break;
+				} catch (ParseException e) {
+					System.err.println("올바르지 않은 입력입니다. ex) hh:mm");
+				}
+			}
+			System.out.println("시간 > " + time + "\t\t 현재 예약 가능 인원은 " + (total-dao.numCheck(date, time))+"명 입니다.");
+			while (true) {
+				System.out.println("예약 인원 > ");
+				num = ScannerUtil.readInt();
+				if (num <= 4) {
+					break;
+				} else if (num < 1) {
+					System.err.println("인원은 1명 이상이어야 합니다.");
+				} else {
+					System.err.println("5인 이상 관람 불가입니다.");
+				}
+			}
+			Reserve r = new Reserve(loginId, date, time, num, input);
+			dao.insert(r);
+		}
+	}
+		
+	private void delete() {
+		ArrayList<Reserve> list = dao.selectAll(loginId);
+		for (Reserve r : list) {
+			System.out.println(r);
+		}
+		String date = null;
+		while (true) {
+			System.out.println("취소할 날짜(yyyy-mm-dd) > ");
+			date = sc.next();
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+				sdf.parse(date);
+				if (date != null)
+					break;
+			} catch (ParseException e) {
+				System.err.println("올바르지 않은 입력입니다. ex) yyyy-mm-dd");
+			}
+		}
+		dao.delete(loginId, date);
 	}
 }
 

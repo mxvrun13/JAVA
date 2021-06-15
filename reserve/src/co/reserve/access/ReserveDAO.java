@@ -93,6 +93,7 @@ public class ReserveDAO extends DAO implements ReserveAccess, MemberAccess{
 				r.setTime(rs.getString("time"));
 				r.setNum(rs.getInt("number"));
 				r.setInput(rs.getString("input"));
+				reserveList.add(r);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -102,12 +103,73 @@ public class ReserveDAO extends DAO implements ReserveAccess, MemberAccess{
 
 	@Override
 	public void insert(Reserve reserve) {
-		
+		sql = "insert into reserve values (?,?,?,?,?)";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, reserve.getId());
+			psmt.setString(2, reserve.getDate());
+			psmt.setString(3, reserve.getTime());
+			psmt.setInt(4, reserve.getNum());
+			psmt.setString(5, reserve.getInput());
+			int r = psmt.executeUpdate();
+			if (r != 0) {
+				System.out.println(r+"건 예약이 정상적으로 완료되었습니다.");
+			} else {
+				System.err.println("오류");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public void delete(String id) {
-		
+	public void delete(String id, String date) {
+		sql = "delete from reserve where u_id = ? and date = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, id);
+			psmt.setString(2, date);
+			int r = psmt.executeUpdate();
+			if (r>0) {
+				System.out.println(r+"건 예약 취소가 완료되었습니다.");
+			} else {
+				System.err.println("존재하지 않는 예약 내역입니다.");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean reserveCheck(String id, String date) {
+		boolean b = false;
+		sql = "select * from reserve where u_id = ? and date = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, id);
+			psmt.setString(2, date);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				b = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return b;
+	}
+	
+	public int numCheck(String date, String time) {
+		int num = 0;
+		sql = "select sum(number) from reserve where date =  ? and time = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, date);
+			psmt.setString(2, time);
+			rs = psmt.executeQuery();
+			num = rs.getInt("sum(number)");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return num;
 	}
 
 	@Override

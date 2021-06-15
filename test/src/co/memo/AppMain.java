@@ -7,4 +7,4 @@ public class AppMain {
 		MemoCliApp app = new MemoCliApp();
 		app.start();
 	}
-}
+} 

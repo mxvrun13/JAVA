@@ -10,6 +10,6 @@ public interface ReserveAccess {
 	public void adminDelete(String id, String date);
 	public ArrayList<Reserve> selectAll(String id);
 	public void insert(Reserve reserve);
-	public void delete(String id);
+	public void delete(String id, String date);
 	
 }
