@@ -24,26 +24,27 @@ public class FriendGuiApp extends JFrame {
 	JButton btnInsert, btnUpdate, btnDelete, btnSelectAll, btnFindName;
 	TextArea txtList;
 	FriendDAO friendList = new FriendDAO();
-	
-	public FriendGuiApp(){
+
+	public FriendGuiApp() {
 		setTitle("친구관리");
 		setSize(400, 400);
 		init();
 		setVisible(true);
 	}
+
 	public void init() {
 		txtName = new TextField(45);
 		txtGubun = new TextField(45);
 		txtTel = new TextField(45);
-		
+
 		btnInsert = new JButton("등록");
 		btnUpdate = new JButton("수정");
 		btnDelete = new JButton("삭제");
 		btnSelectAll = new JButton("전체조회");
 		btnFindName = new JButton("이름조회");
-		
-		txtList = new TextArea(12,50);
-		
+
+		txtList = new TextArea(12, 50);
+
 		this.getContentPane().setLayout(new FlowLayout());
 		this.getContentPane().add(new JLabel("구분"));
 		this.getContentPane().add(txtGubun);
@@ -57,30 +58,30 @@ public class FriendGuiApp extends JFrame {
 		this.getContentPane().add(btnDelete);
 		this.getContentPane().add(btnSelectAll);
 		this.getContentPane().add(btnFindName);
-		
+
 		this.getContentPane().add(txtList);
-		
+
 		btnInsert.addActionListener(new ClickHandler());
 		btnUpdate.addActionListener(new UpdateHandler());
 		btnDelete.addActionListener(new ActionListener() {
 
-			public void actionPerformed(ActionEvent e) {	// 익명 객체
+			public void actionPerformed(ActionEvent e) { // 익명 객체
 				delete();
-			}});
-		btnSelectAll.addActionListener(e ->  selectAll() );
+			}
+		});
+		btnSelectAll.addActionListener(e -> selectAll());
 		btnFindName.addActionListener(e -> findName());
-		
+
 	}
-	
 
 	class UpdateHandler implements ActionListener {
-		
+
 		public void actionPerformed(ActionEvent e) {
 			update();
 		}
-		
+
 	}
-	
+
 	class ClickHandler implements ActionListener {
 
 		@Override
@@ -88,8 +89,8 @@ public class FriendGuiApp extends JFrame {
 			insert();
 		}
 	}
-	
-	//등록
+
+	// 등록
 	public void insert() {
 		Friend friend = new Friend();
 		friend.setGubun(txtGubun.getText());
@@ -125,13 +126,10 @@ public class FriendGuiApp extends JFrame {
 	public void selectAll() {
 		List<Friend> list = friendList.selectAll();
 		StringBuffer sb = new StringBuffer();
-		for(Friend friend : list) {
+		for (Friend friend : list) {
 			sb.append(friend);
 			sb.append("\n");
 		}
 		txtList.setText(sb.toString());
 	}
-	
-	
-	
 }

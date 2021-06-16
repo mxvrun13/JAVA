@@ -39,6 +39,10 @@ public class ReserveApp {
 	
 	private void signUp() {
 		System.out.println("가입 정보");
+		System.out.println("이름 > ");
+		String name = sc.next();	// 스캐너유틸
+		System.out.println("전화번호 > ");
+		String tel = sc.next();	//스캐너유틸
 		System.out.println("id > ");
 		String id = sc.next();
 		if (dao.signUpCheck(id)) {
@@ -47,7 +51,7 @@ public class ReserveApp {
 			System.out.println("비밀번호 확인 > ");
 			String passConfirm = sc.next();
 			if (pass.equals(passConfirm)) {
-				dao.signUp(id, pass);
+				dao.signUp(id, pass, name, tel);
 				System.out.println("회원가입이 완료되었습니다");
 			} else {
 				System.err.println("비밀번호가 일치하지 않습니다.");
@@ -89,24 +93,48 @@ public class ReserveApp {
 	}
 
 	public void loginList() {
-		System.out.println("1. 로그인");
-		System.out.println("2. 회원 가입");
-		System.out.println("3. 회원 탈퇴");
-		System.out.println("0. 종료");
+		System.out.println("┌─────────────────────────────────────────────────────────────────────────────────────┐");
+		System.out.println();
+		System.out.println( "	 			< 대구 미술관 관람 사전 예약 >"+"\n"+"\n"+
+							"			1. 로그인   /   2. 회원 가입   /   3. 회원 탈퇴"+"\n"+
+							"			     4. id찾기   /   5. password 찾기"+"\n"+"\n"+
+							"									       exit(0)");
+		System.out.println("└─────────────────────────────────────────────────────────────────────────────────────┘");
 	}
 	
 	public void adminList() {
 		System.out.println("1. 전제 예약 조회");
 		System.out.println("2. 날짜별 예약 조회");
+		// 유저별
+		// 예약 변경
 		System.out.println("3. 예약 취소");
 		System.out.println("0. 로그아웃");
 	}
 
+	public void guide() {
+		System.out.println("┌─────────────────────────────────────────────────────────────────────────────────────┐");
+		System.out.println( " 대구 미술관을 이용해주시는 시민 여러분께 감사드립니다."+"\n"+
+							" 현재 전시 관람은 코로나19로 인해 사전 예약제로 운영됨을 알려드립니다."+"\n"+
+							" 현장 예매는 불가하오니 관람객 분들께서는 반드시 사전 예약을 이용해 주시기 바라며,"+"\n"+
+							" 방문 시 출입 명부 작성, 마스크 착용 등의 방역지침 준수를 부탁드립니다." +"\n"+
+							"\n"+
+							" 1. 관람은 무료입니다."+"\n"+
+							"    관람 시간은 10:00~18:00이며 매주 월요일은 휴관일 입니다."+"\n"+
+							" 2. 예약 시간대는 1시간 간격으로 구성되어 있으며, 정원은 회차당 80명입니다. (단, 관람시간은 제한이 없습니다.)"+"\n"+
+							" 3. 관람 예약은 아이디당 1일 1회만 가능합니다."+"\n"+
+							" 4. 1회 예약 인원은 아이디당 4명까지 가능합니다. (*5인 이상 집합 금지)"+"\n"+
+							" 5. 코로나19 확산 방지를 위해 단체 관람은 진행하지 않습니다."+"\n"+
+							" 6. 안전한 관람을 위해 회차별 입장을 진행하오니 예약 후 방문해주시기 바랍니다.");
+		System.out.println("└─────────────────────────────────────────────────────────────────────────────────────┘");
+	}
+
 	public void memberList() {
-		System.out.println("1. 예약 조회");
-		System.out.println("2. 관람 예약");
-		System.out.println("3. 예약 취소");
-		System.out.println("0. 로그아웃");
+		System.out.println("┌─────────────────────────────────────────────────────────────────────────────────────┐");
+		System.out.println();
+		System.out.println( "	 			< 대구 미술관 관람 사전 예약 >"+"\n"+"\n"+
+							"		     1. 예약 조회   /   2. 관람 예약   /   3. 예약 취소"+"\n"+"\n"+
+							"									    log-out(0)");
+		System.out.println("└─────────────────────────────────────────────────────────────────────────────────────┘");
 	}
 
 	
@@ -133,6 +161,7 @@ public class ReserveApp {
 							}
 						} while (listnum != 0);
 					} else {
+						guide();
 						do {
 							memberList();
 							System.out.println("선택 > ");
@@ -202,14 +231,17 @@ public class ReserveApp {
 	
 	private void selectAll() {
 		if (dao.selectAll(loginId).size() != 0) {
-			System.out.println(dao.selectAll(loginId));
+			ArrayList<Reserve> list = dao.selectAll(loginId);
+			for (Reserve r : list) {
+				System.out.println(r);
+			}
 		} else {
 			System.out.println("예약 내역에 존재하지 않습니다.");
 		}
 	}
 	
 	private void insert() {
-		int total = 30;
+		int total = 80;
 		String date = null;
 		String time = null;
 		int num = 0;
@@ -242,7 +274,9 @@ public class ReserveApp {
 					System.err.println("올바르지 않은 입력입니다. ex) hh:mm");
 				}
 			}
-			System.out.println("시간 > " + time + "\t\t 현재 예약 가능 인원은 " + (total-dao.numCheck(date, time))+"명 입니다.");
+			System.out.println("============================================="+"\n"+ 
+							   " 시간 > " + time + "\t 현재 예약 가능 인원은 " + (total-dao.numCheck(date, time))+"명 입니다."+"\n"+
+							   "=============================================");
 			while (true) {
 				System.out.println("예약 인원 > ");
 				num = ScannerUtil.readInt();

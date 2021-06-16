@@ -222,12 +222,14 @@ public class ReserveDAO extends DAO implements ReserveAccess, MemberAccess{
 	}
 
 	@Override
-	public void signUp(String id, String pass) {
-		sql = "insert into member values (?,?)";
+	public void signUp(String id, String pass, String name, String tel) {
+		sql = "insert into member values (?,?,?,?)";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, id);
 			psmt.setString(2, pass);
+			psmt.setString(3, name);
+			psmt.setString(4, tel);
 			int r = psmt.executeUpdate();
 			System.out.println(r + "건 등록 완");
 		} catch (SQLException e) {
