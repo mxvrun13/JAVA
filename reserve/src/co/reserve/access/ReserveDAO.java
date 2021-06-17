@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import co.reserve.model.Member;
 import co.reserve.model.Reserve;
 import co.reserve.util.DAO;
 
@@ -58,6 +59,26 @@ public class ReserveDAO extends DAO implements ReserveAccess, MemberAccess{
 			e.printStackTrace();
 		}
 		return reserveList;
+	}
+	
+	@Override
+	public ArrayList<Member> adminMemberSelect() {
+		ArrayList<Member> memberList = new ArrayList<>();
+		sql = "select u_id, u_name, u_tel from member";
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				Member m = new Member();
+				m.setId(rs.getString("u_id"));
+				m.setName(rs.getString("u_name"));
+				m.setTel(rs.getString("u_tel"));
+				memberList.add(m);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return memberList;
 	}
 	
 	@Override
@@ -264,4 +285,42 @@ public class ReserveDAO extends DAO implements ReserveAccess, MemberAccess{
 			e.printStackTrace();
 		}
 	}
+
+	public Member searchId(String name, String tel) {
+		Member m = null;
+		sql = "select u_id from member where u_name = ? and u_tel = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, name);
+			psmt.setString(2, tel);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				m = new Member();
+				m.setId(rs.getString("u_id"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return m;
+	}
+
+	public Member searchpass(String id, String name, String tel) {
+		Member m = null;
+		sql = "select u_pass from member where u_id = ? and u_name = ? and u_tel = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, id);
+			psmt.setString(2, name);
+			psmt.setString(3, tel);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				m = new Member();
+				m.setPass(rs.getString("u_pass"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return m;
+	}
+
 }

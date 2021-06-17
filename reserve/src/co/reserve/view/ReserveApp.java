@@ -1,25 +1,20 @@
 package co.reserve.view;
 
-//import java.io.BufferedReader;
-//import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import co.reserve.access.ReserveDAO;
-//import co.reserve.model.Member;
+import co.reserve.model.Member;
 import co.reserve.model.Reserve;
 import co.reserve.util.ScannerUtil;
 
 public class ReserveApp {
 	
 	String loginId;
-	//BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	Scanner sc = new Scanner(System.in);
 	ReserveDAO dao = new ReserveDAO();
-	//Reserve r = new Reserve();
-	//Member m = new Member();
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	public static final String TIME_FORMAT = "HH:mm";
 	
@@ -38,26 +33,36 @@ public class ReserveApp {
 	}
 	
 	private void signUp() {
-		System.out.println("가입 정보");
+		System.out.println("<< 가입 정보를 입력해주세요. >>");
 		System.out.println("이름 > ");
-		String name = sc.next();	// 스캐너유틸
-		System.out.println("전화번호 > ");
-		String tel = sc.next();	//스캐너유틸
-		System.out.println("id > ");
-		String id = sc.next();
-		if (dao.signUpCheck(id)) {
-			System.out.println("비밀번호 > ");
-			String pass = sc.next();
-			System.out.println("비밀번호 확인 > ");
-			String passConfirm = sc.next();
-			if (pass.equals(passConfirm)) {
-				dao.signUp(id, pass, name, tel);
-				System.out.println("회원가입이 완료되었습니다");
+		String name = ScannerUtil.readStr();
+		while (true) {
+			System.out.println("전화번호(010-0000-0000) > ");
+			String tel = sc.next(); 
+			if (tel.length() == 13) {
+				while (true) {
+					System.out.println("id > ");
+					String id = sc.next();
+					if (dao.signUpCheck(id)) {
+						System.out.println("비밀번호 > ");
+						String pass = sc.next();
+						System.out.println("비밀번호 확인 > ");
+						String passConfirm = sc.next();
+						if (pass.equals(passConfirm)) {
+							dao.signUp(id, pass, name, tel);
+							System.out.println("회원가입이 완료되었습니다");
+							break;
+						} else {
+							System.err.println("비밀번호가 일치하지 않습니다.");
+						}
+					} else {
+						System.err.println("이미 가입된 id입니다.");
+					}
+				}
+				break;
 			} else {
-				System.err.println("비밀번호가 일치하지 않습니다.");
-			}			
-		} else {
-			System.err.println("이미 가입된 id입니다.");
+				System.err.println("올바르지 않은 입력입니다. ex) 010-0000-0000");
+			}
 		}
 	}
 	
@@ -92,6 +97,50 @@ public class ReserveApp {
 		}
 	}
 
+	private void searchId() {
+		System.out.println("가입된 이름 > ");
+		String name = ScannerUtil.readStr();
+		while (true) {
+			System.out.println("가입된 전화번호(010-0000-0000) > ");
+			String tel = sc.next(); // 스캐너유틸
+			if (tel.length() == 13) {
+				Member m = dao.searchId(name, tel);
+				if (m == null) {
+					System.err.println("일치하는 회원 정보가 없습니다.");
+				} else {
+					System.out.println("해당 회원의 id는 " + m.getId() + " 입니다.");
+				}
+				break;
+			} else {
+				System.err.println("올바르지 않은 입력입니다. ex) 010-0000-0000");
+			}
+
+		}
+	}
+	
+	private void searchPass() {
+		System.out.println("가입된 id > ");
+		String id = sc.next();
+		System.out.println("가입된 이름 > ");
+		String name = ScannerUtil.readStr();
+		while (true) {
+			System.out.println("가입된 전화번호(010-0000-0000) > ");
+			String tel = sc.next(); // 스캐너유틸
+			if (tel.length() == 13) {
+				Member m = dao.searchpass(id, name, tel);
+				if (m == null) {
+					System.err.println("일치하는 회원 정보가 없습니다.");
+				} else {
+					System.out.println("해당 회원의 비밀번호는 " + m.getPass() + " 입니다.");
+				}
+				break;
+			} else {
+				System.err.println("올바르지 않은 입력입니다. ex) 010-0000-0000");
+			}
+
+		}
+	}
+
 	public void loginList() {
 		System.out.println("┌─────────────────────────────────────────────────────────────────────────────────────┐");
 		System.out.println();
@@ -103,12 +152,12 @@ public class ReserveApp {
 	}
 	
 	public void adminList() {
-		System.out.println("1. 전제 예약 조회");
-		System.out.println("2. 날짜별 예약 조회");
-		// 유저별
-		// 예약 변경
-		System.out.println("3. 예약 취소");
-		System.out.println("0. 로그아웃");
+		System.out.println("┌─────────────────────────────────────────────────────────────────────────────────────┐");
+		System.out.println(" " +loginId+" 접속");
+		System.out.println( "	 			  < 사전 관람 예약 관리 >"+"\n"+"\n"+
+							"	1. 전체 예약 조회   /   2. 날짜별 예약 조회   /   3. 회원 조회   /   4. 예약 취소"+"\n"+"\n"+
+							"									    log-out(0)");
+		System.out.println("└─────────────────────────────────────────────────────────────────────────────────────┘");
 	}
 
 	public void guide() {
@@ -120,9 +169,9 @@ public class ReserveApp {
 							"\n"+
 							" 1. 관람은 무료입니다."+"\n"+
 							"    관람 시간은 10:00~18:00이며 매주 월요일은 휴관일 입니다."+"\n"+
-							" 2. 예약 시간대는 1시간 간격으로 구성되어 있으며, 정원은 회차당 80명입니다. (단, 관람시간은 제한이 없습니다.)"+"\n"+
+							" 2. 예약 시간대는 1시간 간격으로 구성되어 있으며, 정원은 회차당 80명입니다. (단, 관람 시간은 제한이 없습니다.)"+"\n"+
 							" 3. 관람 예약은 아이디당 1일 1회만 가능합니다."+"\n"+
-							" 4. 1회 예약 인원은 아이디당 4명까지 가능합니다. (*5인 이상 집합 금지)"+"\n"+
+							" 4. 1회 예약 인원은 아이디당 4명까지 가능합니다. (*사적 모임 5인 이상 집합 금지)"+"\n"+
 							" 5. 코로나19 확산 방지를 위해 단체 관람은 진행하지 않습니다."+"\n"+
 							" 6. 안전한 관람을 위해 회차별 입장을 진행하오니 예약 후 방문해주시기 바랍니다.");
 		System.out.println("└─────────────────────────────────────────────────────────────────────────────────────┘");
@@ -130,7 +179,7 @@ public class ReserveApp {
 
 	public void memberList() {
 		System.out.println("┌─────────────────────────────────────────────────────────────────────────────────────┐");
-		System.out.println();
+		System.out.println(" "+loginId+"님 안녕하세요.");
 		System.out.println( "	 			< 대구 미술관 관람 사전 예약 >"+"\n"+"\n"+
 							"		     1. 예약 조회   /   2. 관람 예약   /   3. 예약 취소"+"\n"+"\n"+
 							"									    log-out(0)");
@@ -157,7 +206,8 @@ public class ReserveApp {
 							switch (listnum) {
 							case 1 : adminSelectAll(); break;
 							case 2 : adminSelectDate(); break;
-							case 3 : adminDelete(); break;
+							case 3 : adminMemberSelect(); break;
+							case 4 : adminDelete(); break;
 							}
 						} while (listnum != 0);
 					} else {
@@ -179,14 +229,20 @@ public class ReserveApp {
 				}
 			case 2 : signUp(); break;
 			case 3 : deleteAccount(); break;
+			case 4 : searchId(); break;
+			case 5 : searchPass(); break;
 			}
-		} while (num != 0);
-	}
+		} while (num != 0);	}
+	
 
 	private void adminSelectAll() {
 		ArrayList<Reserve> list = dao.adminSelectAll();
+		System.out.println("┌     id               날짜             시간          인원             예약 시간        ┐");
 		for (Reserve r : list) {
-			System.out.println(r);
+			if(r.getId().equals("admin")) {
+			} else {
+				System.out.println(r);
+			}
 		}
 	}
 
@@ -204,9 +260,28 @@ public class ReserveApp {
 				System.err.println("올바르지 않은 입력입니다. ex) yyyy-mm-dd");
 			}
 		}
-		ArrayList<Reserve> list = dao.adminSelectDate(date);
-		for (Reserve r : list) {
-			System.out.println(r);
+		if (dao.adminSelectDate(date).size() != 0) {
+			ArrayList<Reserve> list = dao.adminSelectDate(date);
+			System.out.println("┌     id               날짜             시간          인원             예약 시간        ┐");
+			for (Reserve r : list) {
+				if(r.getId().equals("admin")) {
+				} else {
+					System.out.println(r);
+				}
+			}
+		} else {
+			System.out.println("예약 내역에 존재하지 않습니다.");
+		}
+	}
+
+	private void adminMemberSelect() {
+		ArrayList<Member> list = dao.adminMemberSelect();
+		System.out.println("┌      id           이름              전화번호       ┐");
+		for (Member m : list) {
+			if (m.getId().equals("admin")) {
+			} else {
+				System.out.println(m);
+			}
 		}
 	}
 
@@ -231,6 +306,7 @@ public class ReserveApp {
 	
 	private void selectAll() {
 		if (dao.selectAll(loginId).size() != 0) {
+			System.out.println("┌     id               날짜             시간          인원             예약 시간        ┐");
 			ArrayList<Reserve> list = dao.selectAll(loginId);
 			for (Reserve r : list) {
 				System.out.println(r);
@@ -263,38 +339,50 @@ public class ReserveApp {
 			System.err.println("예약은 1일 1회만 가능합니다.");
 		} else {
 			while (true) {
-				System.out.println("시간을 선택해주세요 (HH:mm) > ");
+				System.out.println("시간을 선택해주세요 (HH:00) > ");
 				time = sc.next();
 				try {
 					SimpleDateFormat sdf = new SimpleDateFormat(TIME_FORMAT);
 					sdf.parse(time);
-					if (time != null)
+					if (time.substring(3, 5).equals("00") && Integer.parseInt(time.substring(0, 2))>9 && Integer.parseInt(time.substring(0, 2))<18 && time != null) {
 						break;
+					} else {
+						System.err.println("예약은 10:00~17:00 동안 1시간 단위로 가능힙니다. ex) 14:00");
+					}
 				} catch (ParseException e) {
-					System.err.println("올바르지 않은 입력입니다. ex) hh:mm");
+					System.err.println("올바르지 않은 입력입니다. ex) hh:00");
 				}
 			}
-			System.out.println("============================================="+"\n"+ 
-							   " 시간 > " + time + "\t 현재 예약 가능 인원은 " + (total-dao.numCheck(date, time))+"명 입니다."+"\n"+
-							   "=============================================");
-			while (true) {
-				System.out.println("예약 인원 > ");
-				num = ScannerUtil.readInt();
-				if (num <= 4) {
-					break;
-				} else if (num < 1) {
-					System.err.println("인원은 1명 이상이어야 합니다.");
-				} else {
-					System.err.println("5인 이상 관람 불가입니다.");
+			if ((total - dao.numCheck(date, time)) > 0) {
+				System.out.println("=============================================" + "\n" + 
+			                       " 시간 > " + time + "\t 현재 예약 가능 인원은 " + (total - dao.numCheck(date, time)) + "명 입니다." + "\n"
+								 + "=============================================");
+				while (true) {
+					System.out.println("예약 인원 > ");
+					num = ScannerUtil.readInt();
+					if (num <= (total - dao.numCheck(date, time))) {
+						if (num <= 4 && num > 0) {
+							Reserve r = new Reserve(loginId, date, time, num, input);
+							dao.insert(r);
+							break;
+						} else if (num == 0) {
+							System.err.println("인원은 1명 이상이어야 합니다.");
+						} else if (num > 4){
+							System.err.println("5인 이상 관람 불가입니다.");
+						}
+					} else {
+						System.err.println("예약 가능 인원은 " + (total - dao.numCheck(date, time)) + "명 입니다.");
+					}
 				}
+			} else {
+				System.err.println("예약 가능 인원은 0명 입니다. 다른 시간대를 선택해주세요.");
 			}
-			Reserve r = new Reserve(loginId, date, time, num, input);
-			dao.insert(r);
 		}
 	}
 		
 	private void delete() {
 		ArrayList<Reserve> list = dao.selectAll(loginId);
+		System.out.println("┌     id               날짜             시간          인원             예약 시간        ┐");
 		for (Reserve r : list) {
 			System.out.println(r);
 		}

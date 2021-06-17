@@ -64,7 +64,7 @@ public class Reserve {
 
 	@Override
 	public String toString() {
-		return "[예약자=" + id + ", 관람 일자=" + date + ", 관람 시간=" + time + ", 인원=" + num + ", 예약 시간=" + input + "]";
+		return "│    " + id + "    │    " + date + "    │    " + time + "    │    " + num + "    │    " + input + "    │";
 	}
 	
 }

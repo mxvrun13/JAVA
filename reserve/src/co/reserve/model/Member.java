@@ -4,6 +4,10 @@ public class Member {
 	
 	private String id;
 	private String pass;
+	private String name;
+
+
+	private String tel;
 	
 	
 	public Member() {}
@@ -28,10 +32,32 @@ public class Member {
 		this.pass = pass;
 	}
 
+	public String getName() {
+		return name;
+	}
+	
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+	public String getTel() {
+		return tel;
+	}
+	
+	
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
 
 	@Override
 	public String toString() {
-		return "회원 [id=" + id + ", pass=" + pass + "]";
+		return "│    " + id + "    │    " + name + "    │    " + tel + "    │";
 	}
+
+	
+	
 	
 }

@@ -19,6 +19,7 @@ public class ScannerUtil {
 				break;
 			} catch (Exception e) {
 				System.err.println("숫자를 입력하세요.");
+				System.out.println("입력 > ");
 			}
 		}
 		return result;
@@ -32,6 +33,7 @@ public class ScannerUtil {
 				result = scanner.next();
 				i = Integer.valueOf(result);
 				System.err.println("문자를 입력하세요.");
+				System.out.println("입력 > ");
 			} catch (Exception e) {
 				System.out.println(result);
 				break;
