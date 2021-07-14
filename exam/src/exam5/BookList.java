@@ -13,8 +13,12 @@ public class BookList extends BookAccess{
 
 	@Override	// 중복 못함
 	public void insert(Book book) {
-		books.add(book);
-		
+		if (book.getName().equals() {
+			System.err.println("이미 등록된 책 입니다.");
+		} else {
+			books.add(book);
+		}
+
 	}
 
 	@Override
