@@ -2,12 +2,16 @@ package control;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import common.EmpDAO;
 import common.Employee;
@@ -28,11 +32,18 @@ public class EmpListServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 //		out.println("{\"id\":1, \"first_name\":\"Hong\", \"last_name\" : \"GilDong\"}"); // {"id":1, "first_name":"Hong", "last_name" : "GilDong", "email" : "sdf", "hire_date" : "sdfsf"}
 		EmpDAO dao = new EmpDAO();
-		out.println("[");
-		for (Employee emp : dao.getEmpList()) {
-			out.println("{\"id\":"+emp.getEmployeeId()+", \"first_name\":\""+emp.getFirstName()+"\", \"last_name\" : \""+emp.getLastName()+"\", \"email\" : \""+emp.getEmail()+"\", \"hire_date\" : \""+emp.getHireDate()+"\"}");
-		}
-		out.println("]");
+		List<Employee> list = dao.getEmpList();
+		Gson gson = new GsonBuilder().create();
+		out.println(gson.toJson(list));
+		/*
+		 * out.println("["); int cnt = 1; for (Employee emp : list) {
+		 * out.println("{\"id\":"+emp.getEmployeeId()+", \"first_name\":\""+emp.
+		 * getFirstName()+"\", \"last_name\" : \""+emp.getLastName()
+		 * +"\", \"email\" : \""+emp.getEmail()+"\", \"hire_date\" : \""+emp.getHireDate
+		 * ()+"\"}"); if(cnt++ != list.size()) { out.println(","); } }
+		 * out.println("]");
+		 */
+		System.out.println("hi~");
 		
 	}
 

@@ -12,8 +12,7 @@ function ajaxFnc() {
 			let data = JSON.parse(xhtp.responseText);
 			console.log(data);
 		}
-		/*		console.log(xhtp.readyState, xhtp.status);
-				console.log("2");*/
 	}
-	console.log("3");
 }
+
+ajaxFnc();
