@@ -17,8 +17,8 @@ import common.EmpDAO;
 import common.Employee;
 
 
-@WebServlet("/EmpListServlet")
-public class EmpListServlet extends HttpServlet {
+@WebServlet("/EmpListServlet") // 로컬호스트의 emplist 호출, 페이지 주소
+public class EmpListServlet extends HttpServlet { 
 	private static final long serialVersionUID = 1L;
        
 
@@ -26,7 +26,7 @@ public class EmpListServlet extends HttpServlet {
         super();
     }
 
-
+// doGet과 doPost 메소드
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		PrintWriter out = response.getWriter();
