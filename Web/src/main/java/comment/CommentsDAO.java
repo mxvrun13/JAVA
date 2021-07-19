@@ -13,9 +13,61 @@ public class CommentsDAO extends DAO {
 		}
 		return new CommentsDAO();
 	}
+	// 삭제..
+	public HashMap<String, Object> delete(Comments comment) {
+		connect();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		try {
+			conn.setAutoCommit(false);
+			psmt = conn.prepareStatement("delete from comments where id = ?");
+			psmt.setString(1, comment.getId());
+			psmt.executeUpdate();
+			conn.commit();
+			map.put("id", comment.getId());
+			map.put("code", "success");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			map.put("code", "error");
+		} finally {
+			disconnect();
+		}
+		return map;
+	}
 	// 수정.. 
 	public HashMap<String, Object> update(Comments comment) {
-		
+		connect();
+//		int currentId = 0;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		try {
+//			psmt = conn.prepareStatement("select id from comments where name = ?");
+//			psmt.setString(1, comment.getName());
+//			rs = psmt.executeQuery();
+//			if (rs.next()) {
+//				currentId = rs.getInt(1);
+//			}
+			conn.setAutoCommit(false);
+			psmt = conn.prepareStatement("update comments set name=?, content=? where id = ?");
+			psmt.setString(1, comment.getName());
+			psmt.setString(2, comment.getContent());
+			psmt.setString(3, comment.getId());
+			psmt.executeUpdate();
+			conn.commit(); // db commit
+			map.put("id", comment.getId());
+			map.put("name", comment.getName());
+			map.put("content", comment.getContent());
+			map.put("code", "success");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();				
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			map.put("code", "error");
+		} finally {
+			disconnect();
+		} // auto commit 중지
+		return map;
 	}
 	// 입력
 	public HashMap<String, Object> insert(Comments comment) {
