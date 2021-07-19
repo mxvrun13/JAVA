@@ -11,7 +11,7 @@
 
 		function loadCommentList() {
 			let xhtp = new XMLHttpRequest();
-			xhtp.open('get', "../CommemtsServlet?cmd=selectAll");
+			xhtp.open('get', 'CommentsServlet?cmd=selectAll');
 			xhtp.send();
 			xhtp.onreadystatechange = loadCommentResult;
 		}
