@@ -10,19 +10,19 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
-    	$(document).ready(function() {
-        	$('#example').DataTable( {
-            	"ajax": "data/objects.txt",
-            	"columns": [
-                	{ "data": "name" },
-                	{ "data": "position" },
-               		{ "data": "office" },
-                	{ "data": "extn" },
-                	{ "data": "start_date" },
-                	{ "data": "salary" }
-            	]
-        	} );
-    	} );
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "ajax": '../../EmpJsonServ',
+            "columns": [
+               {"data": "eid"},
+               {"data": "fn"},
+               {"data": "ln"},
+               {"data": "em"},
+               {"data": "hd"},
+               {"data": "sa"}
+            ]
+        });
+    });
     </script>
 </head>
 

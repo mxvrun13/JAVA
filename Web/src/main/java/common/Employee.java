@@ -6,18 +6,8 @@ public class Employee {
 	private String lastName;
 	private String email;
 	private String hireDate;
-	private int salary;
-
 	
 	public Employee() {}
-	
-	public int getSalary() {
-		return salary;
-	}
-
-	public void setSalary(int salary) {
-		this.salary = salary;
-	}
 	
 	public Employee(int employeeId, String firstName, String lastName, String email, String hireDate) {
 		super();

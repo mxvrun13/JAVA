@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>exam01</title>
+	<script>
+		let xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "members.json");
+		xhttp.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				let list = JSON.parse(this.response);
+				function showList(list) {
+					//let title = ['employeeId', 'firstName', 'lastName', 'email', 'hireDate'];
+					let tableTag = document.createElement('table');
+					tableTag.setAttribute('border', '1');
+					let cap = document.createElement('caption');
+					cap.appendChild(document.createTextNode('사원리스트'));
+					tableTag.appendChild(cap);
+
+					let trTag = document.createElement('tr');
+					for (let ff of title) {
+						let thTag = document.createElement('th');
+						let text = document.createTextNode(ff);
+						thTag.appendChild(text);
+						trTag.appendChild(thTag);
+					}
+					tableTag.appendChild(trTag);
+					// 전체 데이터를 가져와 반복문으로 필드명+필드값
+					for (let row of data) {
+						let trTag = document.createElement('tr');
+						trTag.setAttribute('id', row.employeeId);
+						trTag.onclick = trClick; // 클릭 이벤트
+						for (let field in row) {
+							let tdTag = document.createElement('td');
+							let text = document.createTextNode(row[field])
+							tdTag.appendChild(text);
+							trTag.appendChild(tdTag);
+						}
+						tableTag.appendChild(trTag);
+					}
+					document.getElementById('show').appendChild(tableTag);
+				}
+			}
+		};
+		xhttp.send();
+	</script>
+</head>
+
+<body>
+
+
+</body>
+
+</html>

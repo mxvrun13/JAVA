@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset='utf-8' />
+	<link href='../lib/main.css' rel='stylesheet' />
+	<script src='../lib/main.js'></script>
+	<script src='../../../js/jquery-3.6.0.js'></script>
+	<script>
+
+		document.addEventListener('DOMContentLoaded', function () {
+
+			//ajax 호출
+			$.ajax({
+				url: '../../../GetScheduleServ',
+				dataType: 'json',
+				success: calendarCallBack,
+				error: function (rej) {
+					console.log(rej);
+				}
+			});
+
+			function calendarCallBack(result) {
+				console.log(result);
+				let data = result;
+
+				var calendarEl = document.getElementById('calendar');
+
+				var calendar = new FullCalendar.Calendar(calendarEl, {
+					headerToolbar: {
+						left: 'prev,next today',
+						center: 'title',
+						right: 'dayGridMonth,timeGridWeek,timeGridDay'
+					},
+					initialDate: '2021-07-12',
+					navLinks: true, // can click day/week names to navigate views
+					selectable: true,
+					selectMirror: true,
+					select: function (arg) {
+						var title = prompt('Event Title:');
+						if (title) {
+							console.log(arg);
+							calendar.addEvent({
+								title: title,
+								start: arg.start,
+								end: arg.end,
+								allDay: arg.allDay
+							}) // 화면 이벤트 추가
+							//DB에 추가하는 기능 호출, 서블릿 활용
+							$.ajax({
+								url: '../../../InputScheduleServ', // 입력처리 서블릿
+								data: {
+									title: title,
+									start: arg.startStr,
+									end: arg.endStr
+								},
+								success: function (result) {
+									if (result == 'success') {
+										alert("입력 완")
+									} else if (result == 'fail') {
+										alret("입력 실패")
+									}
+								},
+								error: function () {}
+							})
+						}
+						calendar.unselect()
+					},
+					eventClick: function (arg) {
+						console.log(arg);
+						if (confirm('Are you sure you want to delete this event?')) {
+							$.ajax({
+								url: '../../../DeleteScheduleServ',
+								data: {
+									title: arg.event._def.title,
+								},
+								success: function (result) {
+									if (result == 'success') {
+										arg.event.remove()
+										alert("삭제 완")
+									} else if (result == 'fail') {
+										alert("삭제 실패")
+									}
+								},
+								error: function () {}
+							})
+						}
+					},
+					editable: true,
+					dayMaxEvents: true, // allow "more" link when too many events
+					events: result
+				});
+
+				calendar.render();
+			}
+		});
+
+	</script>
+	<style>
+		body {
+			margin: 40px 10px;
+			padding: 0;
+			font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+			font-size: 14px;
+		}
+
+		#calendar {
+			max-width: 1100px;
+			margin: 0 auto;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id='calendar'></div>
+
+</body>
+
+</html>
