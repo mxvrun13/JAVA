@@ -13,6 +13,7 @@ public class CommentsDAO extends DAO {
 		}
 		return new CommentsDAO();
 	}
+<<<<<<< HEAD
 	// 삭제..
 	public HashMap<String, Object> delete(Comments comment) {
 		connect();
@@ -32,10 +33,32 @@ public class CommentsDAO extends DAO {
 			disconnect();
 		}
 		return map;
+=======
+	
+	public void delete(Comments comment) {
+		connect();
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+		try {
+			conn.setAutoCommit(false);
+			psmt = conn.prepareStatement("delete from comments where id = ?");
+			psmt.setString(1, comment.getId());
+			psmt.executeUpdate();
+			conn.commit();
+			
+//			map.put("id", comment.getId());
+//			map.put("name", comment.getName());
+//			map.put("content", comment.getContent());
+//			map.put("code", "success");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+//		return map;
+>>>>>>> branch 'main' of https://github.com/mxvrun13/JAVA.git
 	}
 	// 수정.. 
 	public HashMap<String, Object> update(Comments comment) {
 		connect();
+<<<<<<< HEAD
 //		int currentId = 0;
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		try {
@@ -50,6 +73,22 @@ public class CommentsDAO extends DAO {
 			psmt.setString(1, comment.getName());
 			psmt.setString(2, comment.getContent());
 			psmt.setString(3, comment.getId());
+=======
+		int currentId = 0;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		try {
+			psmt = conn.prepareStatement("select id from comments where name = ?");
+			psmt.setString(1, comment.getName());
+			rs = psmt.executeQuery();
+			if (rs.next()) {
+				currentId = rs.getInt(1);
+			}
+			conn.setAutoCommit(false);
+			psmt = conn.prepareStatement("update comments set name=?, content=? where id = ?");
+			psmt.setString(1, comment.getName());
+			psmt.setString(2, comment.getContent());
+			psmt.setInt(3, currentId);
+>>>>>>> branch 'main' of https://github.com/mxvrun13/JAVA.git
 			psmt.executeUpdate();
 			conn.commit(); // db commit
 			map.put("id", comment.getId());

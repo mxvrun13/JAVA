@@ -8,8 +8,12 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v9.0"/>
 	<classpathentry kind="lib" path="C:/dev/ojdbc6_g.jar"/>
 	<classpathentry kind="lib" path="C:/dev/apache-tomcat-9.0.50"/>
+=======
+	<classpathentry kind="lib" path="C:/Users/영서/Desktop/ojdbc6_g.jar"/>
+>>>>>>> branch 'main' of https://github.com/mxvrun13/JAVA.git
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
